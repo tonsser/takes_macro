@@ -7,11 +7,11 @@ Gem::Specification.new do |spec|
   spec.name          = "takes_macro"
   spec.version       = TakesMacro::VERSION
   spec.authors       = ["David Pedersen"]
-  spec.email         = ["david.pdrsn@gmail.com"]
+  spec.email         = ["david@tonsser.com"]
 
   spec.summary       = %q{Remove boilerplate for writing initializers}
   spec.description   = %q{A faster implementation of `pattr_initialize` from the attr_extras gem}
-  # spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/tonsser/takes_macro"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
