@@ -1,6 +1,6 @@
 # TakesMacro
 
-[attr_extras][] is a **great** that lets you remove most of the boilerplate needed for creating different types of initializers in Ruby.
+[attr_extras][] is a **great** gem that lets you remove most of the boilerplate needed for creating different types of initializers in Ruby.
 
 This gem contains a reimplementation of `pattr_initialize` from attr_extras that is much faster. If you're using attr_extras, but the only feature of it you're using is `pattr_initialize` then this gem is for you.
 
@@ -51,6 +51,57 @@ end
 ```
 
 It does that by looking at the arguments to `takes` and from that building a `String` of Ruby code that it will then `class_eval`. That means calling `takes` is literally as fast as writing the initializer by hand. Nothing fancy happens when you call `A.new(...)`.
+
+### Possible arguments to `takes`
+
+You can call `takes` in many different ways depending on the style of initializer you want. Here are the different styles and what they expand into:
+
+#### Positional args
+
+```ruby
+takes :foo, :bar
+
+def initialize(foo, bar)
+  @foo = foo
+  @bar = bar
+end
+```
+
+#### Required keyword args
+
+```ruby
+takes [:foo!, :bar!]
+
+def initialize(foo:, bar:)
+  @foo = foo
+  @bar = bar
+end
+```
+
+#### Optional keyword args
+
+```ruby
+takes [:foo, :bar]
+
+def initialize(foo: nil, bar: nil)
+  @foo = foo
+  @bar = bar
+end
+```
+
+#### Mixed positional, required and optional keyword args
+
+```ruby
+takes :foo, [:bar!, :baz]
+
+def initialize(foo, bar:, baz: nil)
+  @foo = foo
+  @bar = bar
+  @baz = baz
+end
+```
+
+__Note:__ Each instance variable set in the initializer also gets a private `attr_reader`, but that was left out of the examples for clarity.
 
 ## Installation
 
