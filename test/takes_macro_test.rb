@@ -26,6 +26,20 @@ class TakesMacroTest < Minitest::Test
     assert_raises(NoMethodError) { obj.bar }
   end
 
+  test "supports just one optional arg" do
+    klass = Class.new do
+      takes [:bar]
+    end
+
+    obj = klass.new
+
+    assert_nil obj.instance_variable_get(:"@foo")
+
+    assert_nil obj.send(:foo)
+
+    assert_raises(NoMethodError) { obj.foo }
+  end
+
   test "supports optional args" do
     klass = Class.new do
       takes [:foo!, :bar]
