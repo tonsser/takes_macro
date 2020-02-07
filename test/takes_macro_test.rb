@@ -26,18 +26,28 @@ class TakesMacroTest < Minitest::Test
     assert_raises(NoMethodError) { obj.bar }
   end
 
-  test "supports just one optional arg" do
+  test "supports just one optional arg with no value" do
     klass = Class.new do
       takes [:bar]
     end
 
     obj = klass.new
 
-    assert_nil obj.instance_variable_get(:"@foo")
+    assert_nil obj.instance_variable_get(:"@bar")
+    assert_nil obj.send(:bar)
+    assert_raises(NoMethodError) { obj.bar }
+  end
 
-    assert_nil obj.send(:foo)
+  test "supports just one optional arg with value" do
+    klass = Class.new do
+      takes [:bar]
+    end
 
-    assert_raises(NoMethodError) { obj.foo }
+    obj = klass.new(bar: :one)
+
+    assert_equal :one, obj.instance_variable_get(:"@bar")
+    assert_equal :one, obj.send(:bar)
+    assert_raises(NoMethodError) { obj.bar }
   end
 
   test "supports optional args" do
@@ -92,6 +102,22 @@ class TakesMacroTest < Minitest::Test
     assert_nil obj.send(:qux)
   end
 
+  test "supports mixed positional and one optional named arg" do
+    klass = Class.new do
+      takes :foo, :bar, [:baz]
+    end
+
+    obj = klass.new(:one, :two)
+
+    assert_equal :one, obj.instance_variable_get(:"@foo")
+    assert_equal :two, obj.instance_variable_get(:"@bar")
+    assert_nil obj.instance_variable_get(:"@baz")
+
+    assert_equal :one, obj.send(:foo)
+    assert_equal :two, obj.send(:bar)
+    assert_nil obj.send(:baz)
+  end
+
   test "raises if there are extra unknown hash args" do
     klass = Class.new do
       takes [:foo!]
@@ -118,7 +144,7 @@ class TakesMacroTest < Minitest::Test
     assert_raises(ArgumentError) { klass.new(:foo, :bar) }
   end
 
-  test "raises if there are extra unknown mixed args" do
+  test "foobar raises if there are extra unknown mixed args" do
     klass = Class.new do
       takes :foo, [:bar!]
     end

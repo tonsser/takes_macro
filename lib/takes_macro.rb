@@ -20,10 +20,11 @@ module TakesMacro
       positional_args,
     ]
 
-    if keyword_args.any?
+    if keyword_args.one? && !keyword_args.first.include?("!")
+      args_code << "options = {}"
+    elsif keyword_args.any?
       args_code << "options"
     end
-
     args_code = args_code.flatten.compact.join(", ")
 
     bind_positional_args_code = positional_args.map do |arg|
