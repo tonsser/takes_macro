@@ -1,5 +1,8 @@
 # TakesMacro
 
+![ci badge](https://github.com/tonsser/takes_macro/workflows/Ruby/badge.svg "ci badge")
+
+
 [attr_extras][] is a **great** gem that lets you remove most of the boilerplate needed for creating different types of initializers in Ruby.
 
 This gem contains a reimplementation of `pattr_initialize` from attr_extras that is much faster. If you're using attr_extras, but the only feature of it you're using is `pattr_initialize` then this gem is for you.
